@@ -1,4 +1,4 @@
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const ROWS = ["A", "B", "C", "D", "E"];
@@ -11,7 +11,7 @@ const SHOWS = [
 ];
 
 function SeatSelection() {
-  const { id } = useParams();
+ 
   const location = useLocation();
   const navigate = useNavigate();
 
