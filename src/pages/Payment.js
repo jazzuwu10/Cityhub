@@ -6,113 +6,67 @@ function Payment() {
   const { state } = useLocation();
 
   const [upiId, setUpiId] = useState("");
+  const [processing, setProcessing] = useState(false);
 
   if (!state) {
-    return <h2 style={{ color: "white", padding: 40 }}>No payment data</h2>;
+    return <div className="container">No payment data</div>;
   }
 
   const { cinema, show, seats, total } = state;
 
+  const handlePayment = () => {
+    setProcessing(true);
+
+    // Fake processing delay
+    setTimeout(() => {
+      navigate("/success", {
+        state: { cinema, show, seats, total },
+      });
+    }, 2500);
+  };
+
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: "40px",
-        background: "#0f2027",
-        color: "white",
-        textAlign: "center",
-      }}
-    >
-      <h1>📱 UPI Payment</h1>
+    <div className="container">
+      <h1 className="title">UPI Payment</h1>
+      <p className="subtitle">Secure & fast payment</p>
 
       {/* SUMMARY */}
-      <div
-        style={{
-          maxWidth: "400px",
-          margin: "30px auto",
-          background: "rgba(255,255,255,0.1)",
-          padding: "20px",
-          borderRadius: "16px",
-          textAlign: "left",
-        }}
-      >
-        <p><b>Cinema:</b> {cinema}</p>
-        <p><b>Show:</b> {show.time}</p>
-        <p><b>Seats:</b> {seats.join(", ")}</p>
-        <p><b>Total:</b> ₹{total}</p>
+      <div className="payment-card">
+        <p><strong>Cinema:</strong> {cinema}</p>
+        <p><strong>Show:</strong> {show.time}</p>
+        <p><strong>Seats:</strong> {seats.join(", ")}</p>
+        <p className="pay-total">₹{total}</p>
       </div>
 
-      {/* UPI INPUT */}
-      <div style={{ maxWidth: "400px", margin: "auto" }}>
-        <input
-          placeholder="Enter UPI ID (example@upi)"
-          value={upiId}
-          onChange={(e) => setUpiId(e.target.value)}
-          style={input}
-        />
+      {/* PAYMENT AREA */}
+      {!processing ? (
+        <div className="payment-box">
+          <input
+            className="upi-input"
+            placeholder="Enter UPI ID (example@upi)"
+            value={upiId}
+            onChange={(e) => setUpiId(e.target.value)}
+          />
 
-        <button
-          disabled={!upiId}
-          style={{
-            ...payBtn,
-            background: upiId
-              ? "linear-gradient(90deg,#00f260,#0575e6)"
-              : "#555",
-          }}
-          onClick={() => {
-            alert(`UPI Payment Successful\nUPI ID: ${upiId}`);
-            navigate("/success");
-          }}
-        >
-          Pay ₹{total}
-        </button>
-      </div>
-
-      {/* QR (DEMO) */}
-      <p style={{ marginTop: "25px", opacity: 0.8 }}>
-        OR scan QR using any UPI app
-      </p>
-
-      <div
-        style={{
-          margin: "20px auto",
-          width: "160px",
-          height: "160px",
-          background: "white",
-          color: "black",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "12px",
-          fontWeight: "bold",
-        }}
-      >
-        QR CODE
-      </div>
-
-      <p style={{ marginTop: "20px", opacity: 0.6 }}>
-        * Demo UPI payment (no real transaction)
-      </p>
+          <button
+            className="confirm-btn"
+            disabled={!upiId}
+            onClick={handlePayment}
+          >
+            Pay ₹{total}
+          </button>
+        </div>
+      ) : (
+        <div className="processing-box">
+          <div className="loader"></div>
+          <p className="subtitle">Processing UPI payment…</p>
+          <p className="subtitle" style={{ fontSize: "14px", opacity: 0.6 }}>
+            Please do not refresh or press back
+          </p>
+        </div>
+      )}
     </div>
   );
 }
-
-const input = {
-  width: "100%",
-  padding: "12px",
-  marginBottom: "12px",
-  borderRadius: "8px",
-  border: "none",
-};
-
-const payBtn = {
-  width: "100%",
-  padding: "14px",
-  borderRadius: "30px",
-  border: "none",
-  fontSize: "16px",
-  cursor: "pointer",
-  color: "white",
-};
 
 export default Payment;

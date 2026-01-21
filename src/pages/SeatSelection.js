@@ -1,4 +1,4 @@
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const ROWS = ["A", "B", "C", "D", "E"];
@@ -11,7 +11,6 @@ const SHOWS = [
 ];
 
 function SeatSelection() {
- 
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,130 +32,75 @@ function SeatSelection() {
     selectedShow ? selectedSeats.length * selectedShow.price : 0;
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: "40px",
-        background: "#0f2027",
-        color: "white",
-        textAlign: "center",
-      }}
-    >
-      <h1>🎟️ Seat Selection</h1>
-      <p>
-        🎬 Cinema: <b>{cinema}</b>
-      </p>
+    <div className="container">
+      <h1 className="title">Seat Selection</h1>
+      <p className="subtitle">🎬 {cinema}</p>
 
-      {/* SHOW TIMINGS */}
-      <h3 style={{ marginTop: "30px" }}>⏰ Select Show Time</h3>
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+      {/* SHOW TIMES */}
+      <h3 className="subtitle" style={{ marginTop: "30px" }}>
+        ⏰ Select Show Time
+      </h3>
+
+      <div className="showtime-row">
         {SHOWS.map((show) => (
           <button
             key={show.time}
+            className={`showtime-btn ${
+              selectedShow?.time === show.time ? "active" : ""
+            }`}
             onClick={() => setSelectedShow(show)}
-            style={{
-              padding: "10px 18px",
-              borderRadius: "20px",
-              border: "none",
-              cursor: "pointer",
-              background:
-                selectedShow?.time === show.time
-                  ? "linear-gradient(90deg,#00f260,#0575e6)"
-                  : "rgba(255,255,255,0.2)",
-              color: "white",
-            }}
           >
             {show.time}
-            <br />₹{show.price}
+            <span>₹{show.price}</span>
           </button>
         ))}
       </div>
 
       {/* SCREEN */}
-      <div
-        style={{
-          margin: "30px auto",
-          padding: "10px",
-          width: "60%",
-          background: "linear-gradient(90deg,#00f260,#0575e6)",
-          borderRadius: "20px",
-          fontWeight: "bold",
-        }}
-      >
-        SCREEN
-      </div>
+      <div className="screen">SCREEN THIS WAY</div>
 
       {/* SEATS */}
-      {ROWS.map((row) => (
-        <div
-          key={row}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <span style={{ width: "30px" }}>{row}</span>
-
-          {Array.from({ length: SEATS_PER_ROW }).map((_, i) => {
-            const seat = `${row}${i + 1}`;
-            const isSelected = selectedSeats.includes(seat);
-
-            return (
-              <div
-                key={seat}
-                onClick={() => toggleSeat(seat)}
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  margin: "6px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  background: isSelected
-                    ? "linear-gradient(90deg,#ff3b3b,#ff7a18)"
-                    : "rgba(255,255,255,0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "14px",
-                }}
-              >
-                {i + 1}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+      <div className="seats">
+        {ROWS.map((row) => (
+          <div className="seat-row" key={row}>
+            <div className="row-label">{row}</div>
+            {Array.from({ length: SEATS_PER_ROW }).map((_, i) => {
+              const seat = `${row}${i + 1}`;
+              return (
+                <div
+                  key={seat}
+                  className={`seat ${
+                    selectedSeats.includes(seat) ? "selected" : ""
+                  }`}
+                  onClick={() => toggleSeat(seat)}
+                >
+                  {i + 1}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
 
       {/* SUMMARY */}
-      <div style={{ marginTop: "30px" }}>
+      <div className="summary">
         <p>
-          🎟️ Seats:{" "}
-          {selectedSeats.length ? selectedSeats.join(", ") : "None"}
+          🎟 Seats:{" "}
+          <strong>
+            {selectedSeats.length ? selectedSeats.join(", ") : "None"}
+          </strong>
         </p>
 
         <p>
-          💰 Price:{" "}
-          {selectedShow
-            ? `₹${selectedShow.price} × ${selectedSeats.length} = ₹${totalPrice}`
-            : "Select show time"}
+          💰 Total:{" "}
+          <strong>
+            {selectedShow ? `₹${totalPrice}` : "Select show time"}
+          </strong>
         </p>
 
         <button
+          className="confirm-btn"
           disabled={!selectedSeats.length || !selectedShow}
-          style={{
-            marginTop: "20px",
-            padding: "12px 30px",
-            fontSize: "16px",
-            borderRadius: "30px",
-            border: "none",
-            cursor: "pointer",
-            background:
-              selectedSeats.length && selectedShow
-                ? "linear-gradient(90deg,#00f260,#0575e6)"
-                : "#555",
-            color: "white",
-          }}
           onClick={() =>
             navigate("/payment", {
               state: {
