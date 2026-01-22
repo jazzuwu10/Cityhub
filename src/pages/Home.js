@@ -58,26 +58,29 @@ function Home() {
       </h2>
 
       <div className="movies-grid">
-        {loading
-          ? [1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="movie-card skeleton skeleton-card"
-              ></div>
-            ))
-          : movies.slice(0, 3).map((movie) => (
-              <div
-                key={movie.id}
-                className="movie-card"
-                onClick={() => navigate(`/movies/${movie.id}`)}
-              >
-                <img src={movie.image} alt={movie.title} />
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <span>⭐ {movie.rating}</span>
-                </div>
-              </div>
-            ))}
+       {loading
+  ? [1, 2, 3].map((i) => (
+      <div
+        key={i}
+        className="movie-card skeleton skeleton-card"
+      ></div>
+    ))
+  : (search ? filteredMovies : movies)
+      .slice(0, 3)
+      .map((movie) => (
+        <div
+          key={movie.id}
+          className="movie-card"
+          onClick={() => navigate(`/movies/${movie.id}`)}
+        >
+          <img src={movie.image} alt={movie.title} />
+          <div className="movie-info">
+            <h3>{movie.title}</h3>
+            <span>⭐ {movie.rating}</span>
+          </div>
+        </div>
+      ))}
+
       </div>
 
       {/* FEATURED EVENTS */}
