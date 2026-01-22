@@ -12,7 +12,8 @@ function Payment() {
     return <div className="container">No payment data</div>;
   }
 
-  const { cinema, show, seats, total } = state;
+  // 🔥 VERY IMPORTANT: include `type`
+  const { type, cinema, show, seats, total } = state;
 
   const handlePayment = () => {
     setProcessing(true);
@@ -20,7 +21,13 @@ function Payment() {
     // Fake processing delay
     setTimeout(() => {
       navigate("/success", {
-        state: { cinema, show, seats, total },
+        state: {
+          type,        // 🔥 PASS TYPE FOR SUCCESS PAGE
+          cinema,
+          show,
+          seats,
+          total,
+        },
       });
     }, 2500);
   };
@@ -32,9 +39,9 @@ function Payment() {
 
       {/* SUMMARY */}
       <div className="payment-card">
-        <p><strong>Cinema:</strong> {cinema}</p>
-        <p><strong>Show:</strong> {show.time}</p>
-        <p><strong>Seats:</strong> {seats.join(", ")}</p>
+        <p><strong>{type === "shopping" ? "Product" : "Cinema"}:</strong> {cinema}</p>
+        <p><strong>{type === "shopping" ? "Order Type" : "Show"}:</strong> {show.time}</p>
+        <p><strong>{type === "shopping" ? "Quantity" : "Seats"}:</strong> {seats.join(", ")}</p>
         <p className="pay-total">₹{total}</p>
       </div>
 

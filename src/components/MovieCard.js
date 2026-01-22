@@ -5,7 +5,7 @@ function MovieCard({ movie }) {
 
   return (
     <div className="movie-card">
-      <img src={movie.poster} alt={movie.title} />
+      <img src={movie.image} alt={movie.title} />
 
       <div className="movie-info">
         <div>
@@ -15,10 +15,9 @@ function MovieCard({ movie }) {
 
         <button
           className="book-btn"
-          onClick={() => navigate(`/book-movie/${movie.id}`)}
-
+          onClick={() => navigate(`/movies/${movie.id}`)}
         >
-          Book Now
+          Book
         </button>
       </div>
     </div>
