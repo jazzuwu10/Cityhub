@@ -81,8 +81,23 @@ body {
 
 /* ---------- LAYOUT ---------- */
 .container {
-  text-align: center;
-  padding: 60px 24px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 24px;
+}
+.movie-info-panel {
+  flex: 1;
+}
+
+.movie-info-panel h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.movie-info-panel p {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 .title {
@@ -137,17 +152,136 @@ body {
   gap: 28px;
   padding: 0 40px;
 }
+/* HEADER */
+.movie-header {
+  margin-bottom: 30px;
+}
+
+.movie-title {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.movie-meta {
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* LAYOUT */
+.movie-layout {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+/* LEFT */
+.movie-left {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movie-poster {
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+/* RIGHT */
+.movie-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* INFO CARD */
+.info-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+/* INFO ROW */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.15);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row span {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.info-row strong {
+  font-size: 14px;
+}
+
+/* TAGS */
+.tag-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag-row span {
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+}
+
+/* CTA */
+.book-btn.large {
+  padding: 14px;
+  border-radius: 30px;
+  font-size: 15px;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .movie-layout {
+    flex-direction: column;
+  }
+
+  .movie-left {
+    width: 100%;
+    align-items: center;
+  }
+
+  .movie-poster {
+    max-width: 320px;
+  }
+}
 
 /* ---------- MOVIE / EVENT / PRODUCT CARD ---------- */
 .movie-card {
-  background: var(--glass);
-  border-radius: var(--radius-md);
+  background: #0f172a;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.2s ease;
 }
+
+.movie-card:hover {
+  transform: translateY(-4px);
+}
+
 
 .movie-card img {
   width: 100%;
@@ -161,21 +295,35 @@ body {
 }
 
 .movie-info {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 12px;
 }
 
 .movie-info h3 {
-  font-size: 15.5px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 500;
 }
 
 .movie-info span {
-  font-size: 13.5px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: #facc15;
 }
+
+@media (max-width: 768px) {
+  .movie-details {
+    flex-direction: column;
+  }
+
+  .movie-poster {
+    width: 100%;
+    max-width: 280px;
+    margin: auto;
+  }
+
+  .movie-info-panel {
+    text-align: left;
+  }
+}
+
 
 /* ---------- BUTTONS ---------- */
 .book-btn {
@@ -194,23 +342,22 @@ body {
   box-shadow: 0 8px 18px rgba(255, 100, 50, 0.35);
 }
 
-.confirm-btn {
-  margin-top: 25px;
-  padding: 13px 36px;
-  border: none;
-  border-radius: 30px;
-  font-size: 15.5px;
-  font-weight: 600;
-  cursor: pointer;
-  color: white;
-  background: var(--accent-blue);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
+.confirm-btn { margin-top: 25px;
+   padding: 13px 36px;
+    border: none;
+     border-radius: 30px; 
+     font-size: 15.5px;
+      font-weight: 600;
+       cursor: pointer; color: white; 
+       background: var(--accent-blue);
+        transition: transform 0.25s ease, 
+        box-shadow 0.25s ease; }
 
 .confirm-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 200, 255, 0.35);
+  box-shadow: 0 8px 18px rgba(0, 100, 255, 0.35);
 }
+
 
 /* ---------- INPUTS ---------- */
 .event-search,
@@ -230,43 +377,240 @@ select {
 }
 
 /* ---------- SEATS ---------- */
-.screen {
-  margin: 30px auto;
-  width: 60%;
-  padding: 10px;
-  background: var(--accent-blue);
-  border-radius: 20px;
-  font-weight: 700;
+/* PAGE */
+.seat-page {
+  padding-bottom: 120px;
 }
 
-.seat {
-  width: 36px;
-  height: 36px;
-  margin: 6px;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.18);
+/* HEADER */
+.seat-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.seat-header h1 {
+  font-size: 26px;
+}
+
+.seat-header p {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* LEGEND */
+.seat-legend {
   display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 25px;
+  margin: 20px 0;
+  font-size: 13px;
+}
+
+.seat-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.seat-dot.available {
+  background: rgba(255,255,255,0.25);
+}
+
+.seat-dot.selected {
+  background: linear-gradient(90deg, #ff512f, #f09819);
+}
+
+/* SCREEN */
+.screen {
+  width: 60%;
+  margin: 30px auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00f260, #0575e6);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* SEATS */
+.seats-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* STICKY SUMMARY */
+.seat-summary {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(2,6,23,0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 18px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.summary-seats {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.summary-note {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .seat-summary {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+/* PAGE */
+.payment-page {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.payment-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.payment-header h1 {
+  font-size: 28px;
+}
+
+.payment-header p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* CARD */
+.payment-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 26px;
+}
+
+/* SUMMARY */
+.payment-summary {
+  margin-bottom: 24px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.15);
+}
+
+.summary-row span {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.summary-row strong {
+  font-size: 14px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* PAYMENT ACTION */
+.payment-action {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.payment-action input {
+  height: 46px;
+  border-radius: 12px;
+  border: none;
+  padding: 0 14px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.payment-action button {
+  height: 46px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg,#ff512f,#f09819);
+  color: white;
+  font-size: 15px;
   cursor: pointer;
 }
 
-.seat.selected {
-  background: var(--accent-orange);
-  color: black;
+.payment-action button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* ---------- PAYMENT & SUCCESS ---------- */
-.payment-card,
-.ticket-card {
-  max-width: 420px;
-  margin: 30px auto;
-  padding: 24px;
-  background: var(--glass);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--border-glass);
+/* PROCESSING */
+.processing-box {
+  margin-top: 20px;
+  text-align: center;
 }
+
+.processing-box p {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.processing-box span {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* LOADER */
+.loader {
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top: 4px solid #00f260;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ticket-card {
+  margin: 30px auto;
+  padding: 28px;
+  width: 100%;
+  max-width: 480px;   /* ⬅ BIGGER */
+  background: rgba(255,255,255,0.06);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
 
 .ticket-title {
   text-align: center;
@@ -275,6 +619,23 @@ select {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.18);
+}
+
+.ticket-row span {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+}
+
+.ticket-row strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 /* ================= SEAT SELECTION FIX ================= */
 
 .seats {
@@ -379,57 +740,166 @@ select {
 .summary p {
   margin-bottom: 10px;
 }
-/* ================= SUCCESS PAGE UPGRADE ================= */
-
-
-.ticket-card {
-  position: relative;
-  overflow: hidden;
+/* EVENT HEADER */
+.event-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.ticket-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.12),
-    transparent
-  );
-  transform: translateX(-100%);
-  animation: shine 3s infinite;
+.event-title {
+  font-size: 32px;
+  font-weight: 700;
 }
 
-@keyframes shine {
-  to {
-    transform: translateX(100%);
+.event-meta {
+  margin-top: 6px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* BANNER */
+.event-banner {
+  margin: 30px 0;
+}
+
+.event-banner img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* LAYOUT */
+.event-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* LEFT */
+.event-main {
+  flex: 2;
+}
+
+/* RIGHT */
+.event-sidebar {
+  flex: 1;
+}
+
+/* INFO CARD */
+.info-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* INFO ROWS */
+.event-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.15);
+}
+
+.event-info-row span {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.event-info-row strong {
+  font-size: 14px;
+}
+
+/* CTA */
+.book-btn.large {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  border-radius: 30px;
+  background: linear-gradient(90deg,#ff512f,#f09819);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .event-layout {
+    flex-direction: column;
   }
 }
 
-.ticket-row {
-  padding: 10px 0;
-  border-bottom: 1px dashed rgba(255,255,255,0.2);
+/* ================= SUCCESS PAGE UPGRADE ================= */
+
+/* SUCCESS HEADER */
+.success-header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.ticket-row:last-child {
-  border-bottom: none;
-}
 
-/* Success badge */
-.success-badge {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  margin: 0 auto 15px;
-  background: linear-gradient(90deg, #00f260, #0575e6);
+.email-row {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 34px;
-  color: black;
-  box-shadow: 0 0 25px rgba(0, 240, 98, 0.6);
+  gap: 10px;
+  margin-bottom: 20px;
 }
+
+.email-row input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.email-row button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg,#ff512f,#f09819);
+  color: white;
+  cursor: pointer;
+}
+
+.email-success {
+  color: #00f260;
+  font-weight: 600;
+}
+
+/* ACTION BUTTONS */
+.action-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.action-row .primary {
+  background: linear-gradient(90deg,#ff512f,#f09819);
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  color: white;
+}
+
+.action-row .secondary {
+  background: linear-gradient(90deg,#00f260,#0575e6);
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: none;
+  color: black;
+}
+
 /* ================= NAVBAR ACTIVE LINKS ================= */
 
 .nav-links {
@@ -496,7 +966,104 @@ select {
 .skeleton-card {
   height: 360px;
 }
+/* ================= MOVIE DETAILS LAYOUT ================= */
 
+.movie-details {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
 
+/* LEFT POSTER */
+.movie-poster {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 14px;
+  margin-top: 16px;
+}
 
+/* RIGHT COLUMN */
+.movie-extra {
+  max-width: 480px;
+  margin-top: 68px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
+/* INFO CARDS */
+.info-block {
+  padding: 22px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+}
+
+/* HEADINGS */
+.info-block h3 {
+  font-size: 16.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.info-block h3::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 2px;
+  margin-top: 6px;
+  background: #f84464;
+  border-radius: 2px;
+}
+
+/* TEXT */
+.info-block p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.8);
+}
+
+/* MOVIE INFO LIST */
+.info-list {
+  list-style: none;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  margin-bottom: 8px;
+}
+
+/* TAGS */
+.tag-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag-row span {
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+}
+
+/* FULL WIDTH SECTION BELOW */
+.movie-wide {
+  margin-top: 70px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .movie-details {
+    flex-direction: column;
+  }
+
+  .movie-extra {
+    margin-top: 30px;
+    max-width: 100%;
+  }
+}

@@ -5,18 +5,15 @@ function Success() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [email, setEmail] = useState("");
-const [sent, setSent] = useState(false);
-
+  const [sent, setSent] = useState(false);
 
   if (!state) {
     return <div className="container">No booking found</div>;
   }
 
   const { type, cinema, show, seats, total } = state;
-
   const bookingId = "CH" + Math.floor(100000 + Math.random() * 900000);
 
-  // Dynamic title & labels
   const titles = {
     movie: "🎬 Movie Ticket",
     event: "🎉 Event Ticket",
@@ -39,8 +36,9 @@ const [sent, setSent] = useState(false);
       : type === "restaurant"
       ? "Reservation Time"
       : "Show Time";
-      const downloadTicket = () => {
-  const content = `
+
+  const downloadTicket = () => {
+    const content = `
 CITYHUB BOOKING CONFIRMATION
 
 ${mainLabel}: ${cinema}
@@ -52,55 +50,55 @@ Booking ID: ${bookingId}
 Thank you for booking with CityHub!
 `;
 
-  const blob = new Blob([content], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `CityHub_Ticket_${bookingId}.txt`;
-  a.click();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `CityHub_Ticket_${bookingId}.txt`;
+    a.click();
 
-  URL.revokeObjectURL(url);
-};
-const sendEmail = () => {
-  if (!email) return;
-  setSent(true);
+    URL.revokeObjectURL(url);
+  };
 
-  setTimeout(() => {
-    setEmail("");
-  }, 2000);
-};
+  const sendEmail = () => {
+    if (!email) return;
+    setSent(true);
 
-
+    setTimeout(() => {
+      setEmail("");
+    }, 2000);
+  };
 
   return (
     <div className="container">
-<h1 className="title">Booking Confirmed 🎉</h1>
-<p className="subtitle">Your details are below</p>
 
-<div className="success-badge">✓</div>
+      {/* SUCCESS HEADER */}
+      <div className="success-header">
+        <div className="success-badge">✓</div>
+        <h1 className="title">Booking Confirmed</h1>
+        <p className="subtitle">Your booking details are below</p>
+      </div>
+
+      {/* TICKET CARD */}
       <div className="ticket-card">
-        <div style={{ marginTop: "30px" }}>
-  <p className="subtitle">📧 Get booking confirmation on email</p>
 
-  {!sent ? (
-    <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "15px" }}>
-      <input
-        className="upi-input"
-        placeholder="Enter email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button className="book-btn" onClick={sendEmail}>
-        Send
-      </button>
-    </div>
-  ) : (
-    <p style={{ color: "#00f260", marginTop: "15px", fontWeight: "600" }}>
-      ✅ Confirmation sent successfully!
-    </p>
-  )}
-</div>
+        {/* EMAIL */}
+        <div className="email-row">
+          {!sent ? (
+            <>
+              <input
+                type="email"
+                placeholder="Enter email to receive ticket"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button onClick={sendEmail}>Send</button>
+            </>
+          ) : (
+            <p className="email-success">✅ Confirmation sent successfully</p>
+          )}
+        </div>
 
         <h2 className="ticket-title">{titles[type]}</h2>
 
@@ -132,16 +130,15 @@ const sendEmail = () => {
         </div>
       </div>
 
-  <div style={{ display: "flex", gap: "15px", justifyContent: "center", marginTop: "30px" }}>
-  <button className="book-btn" onClick={downloadTicket}>
-    Download Ticket
-  </button>
-
-  <button className="confirm-btn" onClick={() => navigate("/")}>
-    Back to Home
-  </button>
-  
-</div>
+      {/* ACTION BUTTONS */}
+      <div className="action-row">
+        <button className="primary" onClick={downloadTicket}>
+          Download Ticket
+        </button>
+        <button className="secondary" onClick={() => navigate("/")}>
+          Back to Home
+        </button>
+      </div>
 
     </div>
   );

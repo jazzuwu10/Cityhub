@@ -13,34 +13,89 @@ function MovieDetails() {
 
   return (
     <div className="container">
-      <h1 className="title">{movie.title}</h1>
-      <p className="subtitle">⭐ Rating: {movie.rating}</p>
 
-      <img
-        src={movie.image}
-        alt={movie.title}
-        style={{
-          width: "100%",
-          maxWidth: "420px",
-          borderRadius: "18px",
-          marginTop: "20px",
-        }}
-      />
+      {/* HEADER */}
+      <div className="movie-header">
+        <h1 className="movie-title">{movie.title}</h1>
+        <p className="movie-meta">
+          ⭐ {movie.rating} • {movie.language} • {movie.duration}
+        </p>
+      </div>
 
-      <div className="summary">
-        <p>🎭 Genre: {movie.genre || "Action / Drama"}</p>
-        <p>⏱ Duration: {movie.duration || "2h 30m"}</p>
-        <p>🗣 Language: {movie.language || "Hindi"}</p>
+      {/* MAIN LAYOUT */}
+      <div className="movie-layout">
 
-        <button
-          className="confirm-btn"
-          onClick={() =>
-           navigate(`/seats/${movie.id}?cinema=PVR Cinemas`)
+        {/* LEFT */}
+        <div className="movie-left">
+          <img
+            src={movie.image}
+            alt={movie.title}
+            className="movie-poster"
+          />
 
-          }
-        >
-          Select Seats
-        </button>
+          <button
+            className="book-btn large"
+            onClick={() =>
+              navigate(`/seats/${movie.id}`, {
+                state: {
+                  type: "movie",
+                  cinema: movie.title,
+                  show: { time: "4:00 PM" },
+                  seats: ["A4", "A5"],
+                  total: 500,
+                },
+              })
+            }
+          >
+            Select Seats
+          </button>
+        </div>
+
+        {/* RIGHT */}
+        <div className="movie-right">
+
+          {/* ABOUT */}
+          <section className="info-card">
+            <h3>About the movie</h3>
+            <p>{movie.overview}</p>
+          </section>
+
+          {/* INFO */}
+          <section className="info-card">
+            <h3>Movie information</h3>
+
+            <div className="info-row">
+              <span>Genre</span>
+              <strong>{movie.genre}</strong>
+            </div>
+
+            <div className="info-row">
+              <span>Duration</span>
+              <strong>{movie.duration}</strong>
+            </div>
+
+            <div className="info-row">
+              <span>Language</span>
+              <strong>{movie.language}</strong>
+            </div>
+
+            <div className="info-row">
+              <span>Rating</span>
+              <strong>{movie.rating}</strong>
+            </div>
+          </section>
+
+          {/* HIGHLIGHTS */}
+          <section className="info-card">
+            <h3>Highlights</h3>
+            <div className="tag-row">
+              <span>Action Packed</span>
+              <span>Big Screen Experience</span>
+              <span>Popular Cast</span>
+            </div>
+          </section>
+
+        </div>
       </div>
     </div>
   );
