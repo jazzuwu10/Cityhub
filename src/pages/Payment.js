@@ -1,11 +1,21 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
+
+function loadScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
 
 function Payment() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  const [upiId, setUpiId] = useState("");
   const [processing, setProcessing] = useState(false);
 
   if (!state) {
@@ -14,35 +24,76 @@ function Payment() {
 
   const { type, cinema, show, seats, total } = state;
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setProcessing(true);
 
-    setTimeout(() => {
-      navigate("/success", {
-        state: {
-          type,
-          cinema,
-          show,
-          seats,
-          total,
-        },
-      });
-    }, 2500);
+    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+    if (!res) {
+      alert("Razorpay SDK failed to load");
+      return;
+    }
+
+    // Create order from backend
+    const order = await axios.post("http://127.0.0.1:5000/create-order", {
+
+      amount: total,
+    });
+
+    const options = {
+  key: "rzp_test_1DP5mmOlF5G5ag",
+  amount: order.data.amount,
+  currency: "INR",
+  name: "CityHub",
+  description: "Booking Payment",
+
+  // 🔥 VERY IMPORTANT
+  handler: function (response) {
+    navigate("/success", {
+      state: {
+        type,
+        cinema,
+        show,
+        seats,
+        total,
+        paymentId: response.razorpay_payment_id || "demo_payment",
+      },
+    });
+  },
+
+  modal: {
+    ondismiss: function () {
+      alert("Payment cancelled");
+    },
+  },
+
+  prefill: {
+    name: "Test User",
+    email: "test@cityhub.com",
+    contact: "9999999999",
+  },
+
+  theme: {
+    color: "#4f46e5",
+  },
+};
+
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+    setProcessing(false);
   };
 
   return (
     <div className="container payment-page">
 
-      {/* HEADER */}
       <div className="payment-header">
         <h1>Confirm & Pay</h1>
         <p>Complete your booking securely</p>
       </div>
 
-      {/* PAYMENT CARD */}
       <div className="payment-card">
 
-        {/* SUMMARY */}
         <div className="payment-summary">
           <div className="summary-row">
             <span>{type === "shopping" ? "Product" : "Cinema"}</span>
@@ -65,28 +116,16 @@ function Payment() {
           </div>
         </div>
 
-        {/* PAYMENT ACTION */}
         {!processing ? (
           <div className="payment-action">
-            <input
-              type="text"
-              placeholder="Enter UPI ID (example@upi)"
-              value={upiId}
-              onChange={(e) => setUpiId(e.target.value)}
-            />
-
-            <button
-              disabled={!upiId}
-              onClick={handlePayment}
-            >
+            <button onClick={handlePayment}>
               Pay ₹{total}
             </button>
           </div>
-        ) : (
+                ) : (
           <div className="processing-box">
             <div className="loader"></div>
-            <p>Processing UPI payment…</p>
-            <span>Please do not refresh or press back</span>
+            <p>Opening secure payment…</p>
           </div>
         )}
       </div>
@@ -95,3 +134,4 @@ function Payment() {
 }
 
 export default Payment;
+

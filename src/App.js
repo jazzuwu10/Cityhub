@@ -16,6 +16,8 @@ import RestaurantDetails from "./pages/RestaurantDetails";
 import Shopping from "./pages/Shopping";
 import ComingSoon from "./pages/ComingSoon";
 import ProductDetails from "./pages/ProductDetails";
+import MyBookings from "./pages/MyBookings";
+
 function App() {
   return (
     <BrowserRouter>
@@ -36,6 +38,8 @@ function App() {
 <Route path="/shopping" element={<Shopping />} />
 <Route path="/coming-soon" element={<ComingSoon />} />
 <Route path="/shopping/:id" element={<ProductDetails />} />
+<Route path="/my-bookings" element={<MyBookings />} />
+
 
       </Routes>
     </BrowserRouter>

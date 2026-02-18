@@ -21,6 +21,10 @@ function Navbar() {
         <NavLink to="/shopping" className="nav-link">
           Shopping
         </NavLink>
+        <NavLink to="/my-bookings" className="nav-link">
+          My Bookings
+        </NavLink>
+
       </div>
 
       <button className="login-btn">Login</button>

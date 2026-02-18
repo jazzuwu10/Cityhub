@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Success() {
   const navigate = useNavigate();
@@ -7,12 +7,34 @@ function Success() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
+  const bookingId = "CH" + Math.floor(100000 + Math.random() * 900000);
+
+  // Save booking safely
+  useEffect(() => {
+    if (!state) return;
+
+    const { type, cinema, show, seats, total, paymentId } = state;
+
+    const bookings = JSON.parse(localStorage.getItem("cityhubBookings")) || [];
+
+    bookings.push({
+      type,
+      cinema,
+      show,
+      seats,
+      total,
+      paymentId,
+      bookingId
+    });
+
+    localStorage.setItem("cityhubBookings", JSON.stringify(bookings));
+  }, [state]);
+
   if (!state) {
     return <div className="container">No booking found</div>;
   }
 
-  const { type, cinema, show, seats, total } = state;
-  const bookingId = "CH" + Math.floor(100000 + Math.random() * 900000);
+  const { type, cinema, show, seats, total, paymentId } = state;
 
   const titles = {
     movie: "🎬 Movie Ticket",
@@ -46,6 +68,7 @@ ${timeLabel}: ${show.time}
 Details: ${seats.join(", ")}
 ${total > 0 ? `Total Paid: ₹${total}` : ""}
 Booking ID: ${bookingId}
+Payment ID: ${paymentId}
 
 Thank you for booking with CityHub!
 `;
@@ -64,26 +87,20 @@ Thank you for booking with CityHub!
   const sendEmail = () => {
     if (!email) return;
     setSent(true);
-
-    setTimeout(() => {
-      setEmail("");
-    }, 2000);
+    setTimeout(() => setEmail(""), 2000);
   };
 
   return (
     <div className="container">
 
-      {/* SUCCESS HEADER */}
       <div className="success-header">
         <div className="success-badge">✓</div>
         <h1 className="title">Booking Confirmed</h1>
         <p className="subtitle">Your booking details are below</p>
       </div>
 
-      {/* TICKET CARD */}
       <div className="ticket-card">
 
-        {/* EMAIL */}
         <div className="email-row">
           {!sent ? (
             <>
@@ -128,9 +145,13 @@ Thank you for booking with CityHub!
           <span>Booking ID</span>
           <strong>{bookingId}</strong>
         </div>
+
+        <div className="ticket-row">
+          <span>Payment ID</span>
+          <strong>{paymentId}</strong>
+        </div>
       </div>
 
-      {/* ACTION BUTTONS */}
       <div className="action-row">
         <button className="primary" onClick={downloadTicket}>
           Download Ticket
