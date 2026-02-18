@@ -7,28 +7,33 @@ function Success() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
-  const bookingId = "CH" + Math.floor(100000 + Math.random() * 900000);
+ 
 
   // Save booking safely
-  useEffect(() => {
-    if (!state) return;
+  const [bookingId, setBookingId] = useState("");
 
-    const { type, cinema, show, seats, total, paymentId } = state;
+useEffect(() => {
+  if (!state) return;
 
-    const bookings = JSON.parse(localStorage.getItem("cityhubBookings")) || [];
+  const newBookingId = "CH" + Math.floor(100000 + Math.random() * 900000);
+  setBookingId(newBookingId);
 
-    bookings.push({
-      type,
-      cinema,
-      show,
-      seats,
-      total,
-      paymentId,
-      bookingId
-    });
+  const { type, cinema, show, seats, total, paymentId } = state;
 
-    localStorage.setItem("cityhubBookings", JSON.stringify(bookings));
-  }, [state]);
+  const bookings = JSON.parse(localStorage.getItem("cityhubBookings")) || [];
+
+  bookings.push({
+    type,
+    cinema,
+    show,
+    seats,
+    total,
+    paymentId,
+    bookingId: newBookingId
+  });
+
+  localStorage.setItem("cityhubBookings", JSON.stringify(bookings));
+}, [state]);
 
   if (!state) {
     return <div className="container">No booking found</div>;
