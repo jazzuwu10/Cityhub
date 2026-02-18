@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+
 
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -24,65 +24,55 @@ function Payment() {
 
   const { type, cinema, show, seats, total } = state;
 
-  const handlePayment = async () => {
-    setProcessing(true);
+ const handlePayment = async () => {
+  const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
-    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  if (!res) {
+    alert("Razorpay SDK failed to load");
+    return;
+  }
 
-    if (!res) {
-      alert("Razorpay SDK failed to load");
-      return;
-    }
+  const options = {
+    key: "rzp_test_1DP5mmOlF5G5ag",
+    amount: total * 100,
+    currency: "INR",
+    name: "CityHub",
+    description: "Booking Payment",
 
-    // Create order from backend
-    const order = await axios.post("http://127.0.0.1:5000/create-order", {
-
-      amount: total,
-    });
-
-    const options = {
-  key: "rzp_test_1DP5mmOlF5G5ag",
-  amount: order.data.amount,
-  currency: "INR",
-  name: "CityHub",
-  description: "Booking Payment",
-
-  // 🔥 VERY IMPORTANT
-  handler: function (response) {
-    navigate("/success", {
-      state: {
-        type,
-        cinema,
-        show,
-        seats,
-        total,
-        paymentId: response.razorpay_payment_id || "demo_payment",
-      },
-    });
-  },
-
-  modal: {
-    ondismiss: function () {
-      alert("Payment cancelled");
+    handler: function (response) {
+      navigate("/success", {
+        state: {
+          type,
+          cinema,
+          show,
+          seats,
+          total,
+          paymentId: response.razorpay_payment_id || "demo_payment",
+        },
+      });
     },
-  },
 
-  prefill: {
-    name: "Test User",
-    email: "test@cityhub.com",
-    contact: "9999999999",
-  },
+    modal: {
+      ondismiss: function () {
+        alert("Payment cancelled");
+      },
+    },
 
-  theme: {
-    color: "#4f46e5",
-  },
+    prefill: {
+      name: "Test User",
+      email: "test@cityhub.com",
+      contact: "9999999999",
+    },
+
+    theme: {
+      color: "#4f46e5",
+    },
+  };
+
+  const paymentObject = new window.Razorpay(options);
+  paymentObject.open();
 };
 
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-    setProcessing(false);
-  };
 
   return (
     <div className="container payment-page">
