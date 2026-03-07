@@ -1,0 +1,56 @@
+.event-booking{
+    text-align:center;
+    padding:40px;
+    color:white;
+}
+
+/* Curved Stage */
+
+.stage{
+    width:600px;
+    margin:20px auto 50px auto;
+    padding:12px;
+    background:#1e2a50;
+    border-radius:50% / 120px 120px 0 0;
+    font-weight:bold;
+}
+
+/* Seats */
+
+.seat-grid{
+    display:grid;
+    grid-template-columns:repeat(10,45px);
+    gap:10px;
+    justify-content:center;
+}
+
+.seat{
+    background:#1e2a50;
+    padding:10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.seat:hover{
+    transform:scale(1.05);
+}
+
+.seat.selected{
+    background:#00e676;
+}
+
+/* Bottom info */
+
+.booking-info{
+    margin-top:40px;
+}
+
+.booking-info button{
+    margin-top:15px;
+    padding:10px 25px;
+    background:#00e676;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}

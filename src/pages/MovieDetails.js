@@ -1,100 +1,82 @@
 import { useParams, useNavigate } from "react-router-dom";
 import movies from "../data/movies";
-
+import "./MovieDetails.css";
+import { useState } from "react";
 function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [activeTrailer, setActiveTrailer] = useState(null);
 
-  const movie = movies.find((m) => m.id === Number(id));
+  const movie = movies.find((m) => m.id === parseInt(id));
 
   if (!movie) {
-    return <div className="container">Movie not found</div>;
+    return <h2 className="not-found">Movie Not Found</h2>;
   }
 
   return (
-    <div className="container">
+    <div
+      className="movie-hero"
+      style={{
+        backgroundImage: `url(${movie.image})`,
+      }}
+    >
+      <div className="overlay"></div>
 
-      {/* HEADER */}
-      <div className="movie-header">
-        <h1 className="movie-title">{movie.title}</h1>
-        <p className="movie-meta">
-          ⭐ {movie.rating} • {movie.language} • {movie.duration}
-        </p>
-      </div>
-
-      {/* MAIN LAYOUT */}
-      <div className="movie-layout">
-
-        {/* LEFT */}
-        <div className="movie-left">
-          <img
-            src={movie.image}
-            alt={movie.title}
-            className="movie-poster"
-          />
-
-          <button
-            className="book-btn large"
-            onClick={() =>
-              navigate(`/seats/${movie.id}`, {
-                state: {
-                  type: "movie",
-                  cinema: movie.title,
-                  show: { time: "4:00 PM" },
-                  seats: ["A4", "A5"],
-                  total: 500,
-                },
-              })
-            }
-          >
-            Select Seats
-          </button>
+      <div className="movie-container">
+        <div className="movie-poster">
+          <img src={movie.image} alt={movie.title} />
         </div>
 
-        {/* RIGHT */}
-        <div className="movie-right">
+        <div className="movie-info">
+          <h1>{movie.title}</h1>
 
-          {/* ABOUT */}
-          <section className="info-card">
-            <h3>About the movie</h3>
-            <p>{movie.overview}</p>
-          </section>
+          <div className="rating">
+            ⭐ {movie.rating}/10
+          </div>
 
-          {/* INFO */}
-          <section className="info-card">
-            <h3>Movie information</h3>
+          <div className="meta">
+            <span>{movie.genre}</span>
+            <span>{movie.duration}</span>
+            <span>{movie.language}</span>
+          </div>
 
-            <div className="info-row">
-              <span>Genre</span>
-              <strong>{movie.genre}</strong>
-            </div>
+          <p className="description">
+            {movie.description}
+          </p>
 
-            <div className="info-row">
-              <span>Duration</span>
-              <strong>{movie.duration}</strong>
-            </div>
+          <div style={{ marginTop: "20px", display: "flex", gap: "15px" }}>
+  <button
+    onClick={() => navigate(`/select-cinema/${movie.id}`)}
+    className="book-btn"
+  >
+    🎟 Select Cinema
+  </button>
 
-            <div className="info-row">
-              <span>Language</span>
-              <strong>{movie.language}</strong>
-            </div>
+  <button
+    className="trailer-btn"
+    onClick={() => setActiveTrailer(movie.trailer)}
+  >
+    ▶ Watch Trailer
+  </button>
+  {activeTrailer && (
+  <div className="trailer-modal">
+    <div className="trailer-content">
+      <span
+        className="close-btn"
+        onClick={() => setActiveTrailer(null)}
+      >
+        ✕
+      </span>
 
-            <div className="info-row">
-              <span>Rating</span>
-              <strong>{movie.rating}</strong>
-            </div>
-          </section>
-
-          {/* HIGHLIGHTS */}
-          <section className="info-card">
-            <h3>Highlights</h3>
-            <div className="tag-row">
-              <span>Action Packed</span>
-              <span>Big Screen Experience</span>
-              <span>Popular Cast</span>
-            </div>
-          </section>
-
+      <iframe
+        src={activeTrailer}
+        title="Trailer"
+        allowFullScreen
+      ></iframe>
+    </div>
+  </div>
+)}
+</div>
         </div>
       </div>
     </div>

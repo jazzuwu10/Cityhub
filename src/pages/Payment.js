@@ -1,110 +1,144 @@
 import { useLocation, useNavigate } from "react-router-dom";
-
-function loadScript(src) {
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = src;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
+import { useState } from "react";
+import "./Payment.css";
 
 function Payment() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const { state } = useLocation();
 
-  if (!state) {
-    return <div className="container">No payment data</div>;
-  }
+  const { cinema, screen, showTime, seats, totalAmount } =
+    location.state || {};
 
-  const { type, cinema, show, seats, total } = state;
+  const [method, setMethod] = useState("upi");
+  const [showFees, setShowFees] = useState(false);
+  const [coupon, setCoupon] = useState("");
+  const [processing, setProcessing] = useState(false);
 
-  const handlePayment = async () => {
-    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  const convenienceFee = 40;
+  const discount = coupon === "CITY50" ? 50 : 0;
+  const finalTotal = totalAmount + convenienceFee - discount;
 
-    if (!res) {
-      alert("Razorpay SDK failed to load");
-      return;
-    }
+  const handlePayment = () => {
+    setProcessing(true);
 
-    const options = {
-      key: "rzp_test_1DP5mmOlF5G5ag",
-      amount: total * 100,
-      currency: "INR",
-      name: "CityHub",
-      description: "Booking Payment",
-
-      handler: function (response) {
-        navigate("/success", {
-          state: {
-            type,
-            cinema,
-            show,
-            seats,
-            total,
-            paymentId: response.razorpay_payment_id || "demo_payment",
-          },
-        });
-      },
-
-      modal: {
-        ondismiss: function () {
-          alert("Payment cancelled");
+    setTimeout(() => {
+      navigate("/success", {
+        state: {
+          cinema,
+          screen,
+          showTime,
+          seats,
+          totalAmount: finalTotal,
         },
-      },
-
-      prefill: {
-        name: "Test User",
-        email: "test@cityhub.com",
-        contact: "9999999999",
-      },
-
-      theme: {
-        color: "#4f46e5",
-      },
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+      });
+    }, 2000);
   };
 
   return (
-    <div className="container payment-page">
+    <div className="bms-payment-page">
+      <div className="bms-container">
 
-      <div className="payment-header">
-        <h1>Confirm & Pay</h1>
-        <p>Complete your booking securely</p>
-      </div>
+        {/* LEFT MENU */}
+        <div className="bms-left">
+          <h3>Payment options</h3>
 
-      <div className="payment-card">
-
-        <div className="payment-summary">
-          <div className="summary-row">
-            <span>{type === "shopping" ? "Product" : "Cinema"}</span>
-            <strong>{cinema}</strong>
-          </div>
-
-          <div className="summary-row">
-            <span>{type === "shopping" ? "Order Type" : "Show Time"}</span>
-            <strong>{show.time}</strong>
-          </div>
-
-          <div className="summary-row">
-            <span>{type === "shopping" ? "Quantity" : "Seats"}</span>
-            <strong>{seats.join(", ")}</strong>
-          </div>
-
-          <div className="summary-total">
-            <span>Total Amount</span>
-            <strong>₹{total}</strong>
-          </div>
+          {["upi", "card", "wallet", "netbanking"].map((m) => (
+            <div
+              key={m}
+              className={`bms-method ${method === m ? "active" : ""}`}
+              onClick={() => setMethod(m)}
+            >
+              {m === "upi" && "Pay by any UPI App"}
+              {m === "card" && "Debit / Credit Card"}
+              {m === "wallet" && "Mobile Wallets"}
+              {m === "netbanking" && "Net Banking"}
+            </div>
+          ))}
         </div>
 
-        <div className="payment-action">
-          <button onClick={handlePayment}>
-            Pay ₹{total}
+        {/* CENTER CONTENT */}
+        <div className="bms-center">
+
+          {method === "upi" && (
+            <>
+              <h4>Pay by any UPI App</h4>
+              <input placeholder="Enter UPI ID" />
+            </>
+          )}
+
+          {method === "card" && (
+            <>
+              <h4>Enter Card Details</h4>
+              <input placeholder="Card Number" />
+              <input placeholder="Card Holder Name" />
+              <div className="row">
+                <input placeholder="MM/YY" />
+                <input placeholder="CVV" />
+              </div>
+            </>
+          )}
+
+          {/* Coupon Section */}
+          <div className="coupon-box">
+            <input
+              placeholder="Apply Coupon"
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+            />
+            <button>Apply</button>
+          </div>
+
+          {discount > 0 && (
+            <p className="discount-text">Coupon Applied: -₹{discount}</p>
+          )}
+
+          {/* Pay Button */}
+          <button
+            className="bms-pay-btn"
+            onClick={handlePayment}
+            disabled={processing}
+          >
+            {processing ? "Processing..." : `Pay ₹${finalTotal}`}
           </button>
+        </div>
+
+        {/* RIGHT SUMMARY */}
+        <div className="bms-right">
+          <h4>Booking Summary</h4>
+
+          <p><strong>Cinema:</strong> {cinema}</p>
+          <p><strong>Screen:</strong> {screen}</p>
+          <p><strong>Time:</strong> {showTime}</p>
+          <p><strong>Seats:</strong> {seats?.join(", ")}</p>
+
+          <div className="price-box">
+
+            <div onClick={() => setShowFees(!showFees)} className="clickable">
+              <span>Tickets Price</span>
+              <span>₹{totalAmount}</span>
+            </div>
+
+            {showFees && (
+              <>
+                <div>
+                  <span>Convenience Fee</span>
+                  <span>₹{convenienceFee}</span>
+                </div>
+                {discount > 0 && (
+                  <div>
+                    <span>Discount</span>
+                    <span>-₹{discount}</span>
+                  </div>
+                )}
+              </>
+            )}
+
+            <div className="total">
+              <span>Total</span>
+              <span>₹{finalTotal}</span>
+            </div>
+          </div>
+
         </div>
 
       </div>

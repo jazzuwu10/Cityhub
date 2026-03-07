@@ -2,104 +2,96 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import movies from "../data/movies";
 import events from "../data/events";
+import "./Home.css";
+
+// Swiper
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/autoplay";
+import { Autoplay } from "swiper/modules";
 
 function Home() {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
-
-  const loading = false; // ✅ NOW CORRECT
-
-  const filteredMovies = movies.filter((m) =>
-    m.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const filteredEvents = events.filter((e) =>
-    e.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const [city, setCity] = useState("Amritsar");
 
   return (
-    <div className="container">
-      {/* HERO */}
-      <h1 className="title">CityHub</h1>
-      <p className="subtitle">
-        Movies, Events & Experiences — all in one place
-      </p>
+    <div className="home-page">
 
-      {/* GLOBAL SEARCH */}
-      <input
-        className="event-search"
-        placeholder="Search movies, events, shows..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+      {/* CITY SELECTOR */}
+      <div className="city-selector">
+        <span>📍 {city}</span>
+        <select onChange={(e) => setCity(e.target.value)}>
+          <option>Amritsar</option>
+          <option>Delhi</option>
+          <option>Mumbai</option>
+          <option>Chandigarh</option>
+        </select>
+      </div>
+
+      {/* HERO SLIDER */}
+      <Swiper
+        modules={[Autoplay]}
+        autoplay={{ delay: 3000 }}
+        loop={true}
+        className="hero-slider"
+      >
+        {movies.slice(0, 3).map((movie) => (
+          <SwiperSlide key={movie.id}>
+            <div
+              className="hero-slide"
+              style={{ backgroundImage: `url(${movie.image})` }}
+              onClick={() => navigate(`/movies/${movie.id}`)}
+            >
+              <div className="hero-overlay">
+                <h1>{movie.title}</h1>
+                <p>⭐ {movie.rating}</p>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* FEATURED MOVIES */}    
+
+      <Section
+        title="🔥 Trending Movies"
+        data={movies}
+        navigate={navigate}
+        type="movie"
+      />  
+ 
+
+      {/* EVENTS */}
+      <Section
+        title="🎉 Upcoming Events"
+        data={events}
+        navigate={navigate}
+        type="event"
       />
 
-      {/* QUICK ACTIONS */}
-      <div className="card-grid">
-        <div className="card" onClick={() => navigate("/movies")}>
-          🎬 Movies
-        </div>
-        <div className="card" onClick={() => navigate("/events")}>
-          🎉 Events
-        </div>
-        <div className="card" onClick={() => navigate("/restaurants")}>
-          🍽 Restaurants
-        </div>
-        <div className="card" onClick={() => navigate("/shopping")}>
-          🛍 Shopping
-        </div>
-        <div className="card" onClick={() => navigate("/coming-soon")}>
-          🚀 More
-        </div>
-      </div>
+    </div>
+  );
+}
 
-      {/* FEATURED MOVIES */}
-      <h2 style={{ marginTop: "70px", textAlign: "left" }}>
-        🎬 Popular Movies
-      </h2>
+function Section({ title, data, navigate, type }) {
+  return (
+    <div className="home-section fade-in">
+      <h2>{title}</h2>
 
-      <div className="movies-grid">
-       {loading
-  ? [1, 2, 3].map((i) => (
-      <div
-        key={i}
-        className="movie-card skeleton skeleton-card"
-      ></div>
-    ))
-  : (search ? filteredMovies : movies)
-      .slice(0, 3)
-      .map((movie) => (
-        <div
-          key={movie.id}
-          className="movie-card"
-          onClick={() => navigate(`/movies/${movie.id}`)}
-        >
-          <img src={movie.image} alt={movie.title} />
-          <div className="movie-info">
-            <h3>{movie.title}</h3>
-            <span>⭐ {movie.rating}</span>
-          </div>
-        </div>
-      ))}
-
-      </div>
-
-      {/* FEATURED EVENTS */}
-      <h2 style={{ marginTop: "60px", textAlign: "left" }}>
-        🎉 Trending Events
-      </h2>
-
-      <div className="movies-grid">
-        {(search ? filteredEvents : events).slice(0, 4).map((event) => (
+      <div className="horizontal-scroll">
+        {data.slice(0, 6).map((item) => (
           <div
-            key={event.id}
-            className="movie-card"
-            onClick={() => navigate(`/events/${event.id}`)}
+            key={item.id}
+            className="home-card"
+            onClick={() =>
+              navigate(`/${type === "movie" ? "movies" : "events"}/${item.id}`)
+            }
           >
-            <img src={event.image} alt={event.title} />
-            <div className="movie-info">
-              <h3>{event.title}</h3>
-              <span>{event.date}</span>
-            </div>
+            {item.rating >= 8.2 && (
+              <div className="trending-badge">🔥 Trending</div>
+            )}
+            <img src={item.image} alt={item.title} />
+            <p>{item.title}</p>
           </div>
         ))}
       </div>

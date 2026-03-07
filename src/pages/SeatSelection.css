@@ -1,0 +1,177 @@
+/* ================= PAGE BACKGROUND ================= */
+.seat-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1f, #0f1c3f);
+  padding: 60px 80px;
+  font-family: "Segoe UI", sans-serif;
+  color: white;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.seat-container {
+  display: flex;
+  gap: 50px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ================= LEFT SIDE ================= */
+.seat-layout {
+  flex: 2;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* Cinema title */
+.seat-layout h2 {
+  color: #00e676;
+  margin-bottom: 6px;
+}
+
+.seat-layout p {
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* ================= SCREEN ================= */
+.screen {
+  margin: 40px auto;
+  width: 70%;
+  padding: 12px;
+  text-align: center;
+  background: linear-gradient(90deg, #00e676, #1e88e5);
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  color: black;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+/* ================= SEAT GRID ================= */
+.seats-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 18px;
+  justify-items: center;
+}
+
+/* ================= SEAT STYLE ================= */
+.seat {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  background: #3a4357;
+  color: white;
+}
+
+.seat:hover {
+  transform: scale(1.08);
+}
+
+/* Selected */
+.seat.selected {
+  background: linear-gradient(90deg, #ff512f, #f09819);
+  color: white;
+}
+
+/* Booked */
+.seat.booked {
+  background: #222;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* ================= LEGEND ================= */
+.legend {
+  display: flex;
+  gap: 30px;
+  margin-top: 35px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.box {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.available {
+  background: #3a4357;
+}
+
+.selected {
+  background: linear-gradient(90deg, #ff512f, #f09819);
+}
+
+.booked {
+  background: #222;
+}
+
+/* ================= RIGHT SIDE ================= */
+.booking-summary {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  padding: 35px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  height: fit-content;
+}
+
+.booking-summary h3 {
+  color: #00e676;
+  margin-bottom: 20px;
+}
+
+/* Selected info box */
+.selected-info {
+  background: #111c33;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+/* Continue Button */
+.booking-summary button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff512f, #f09819);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.booking-summary button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(255, 81, 47, 0.4);
+}
+
+.booking-summary button:disabled {
+  background: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1000px) {
+  .seat-container {
+    flex-direction: column;
+  }
+}

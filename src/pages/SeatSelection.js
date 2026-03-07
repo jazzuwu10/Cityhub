@@ -1,119 +1,128 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-const ROWS = ["A", "B", "C", "D", "E"];
-const SEATS_PER_ROW = 8;
-
-const SHOWS = [
-  { time: "10:30 AM", price: 200 },
-  { time: "4:00 PM", price: 250 },
-  { time: "9:00 PM", price: 300 },
-];
+import "./SeatSelection.css";
 
 function SeatSelection() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const params = new URLSearchParams(location.search);
-  const cinema = params.get("cinema");
+  const { cinema, screen, showTime, price } = location.state || {};
+
+  // Seat Row Configuration (Multiplex Style)
+  const rowsData = [
+    { row: "A", type: "Platinum", price: price + 100 },
+    { row: "B", type: "Platinum", price: price + 100 },
+    { row: "C", type: "Gold", price: price + 50 },
+    { row: "D", type: "Gold", price: price + 50 },
+    { row: "E", type: "Silver", price: price },
+    { row: "F", type: "Silver", price: price },
+    { row: "G", type: "Silver", price: price },
+    { row: "H", type: "Silver", price: price },
+  ];
+
+  const cols = 10;
+
+  // Demo Booked Seats
+  const bookedSeats = ["A3", "A4", "C7", "D2", "F5", "G8"];
 
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [selectedShow, setSelectedShow] = useState(null);
 
-  const toggleSeat = (seat) => {
-    setSelectedSeats((prev) =>
-      prev.includes(seat)
-        ? prev.filter((s) => s !== seat)
-        : [...prev, seat]
-    );
+  // Toggle Seat
+  const toggleSeat = (seatNumber) => {
+    if (bookedSeats.includes(seatNumber)) return;
+
+    if (selectedSeats.includes(seatNumber)) {
+      setSelectedSeats(selectedSeats.filter((s) => s !== seatNumber));
+    } else {
+      setSelectedSeats([...selectedSeats, seatNumber]);
+    }
   };
 
-  const totalPrice =
-    selectedShow ? selectedSeats.length * selectedShow.price : 0;
+  // Dynamic Total Calculation (based on row type)
+  const totalAmount = selectedSeats.reduce((total, seat) => {
+    const rowLetter = seat.charAt(0);
+    const rowInfo = rowsData.find((r) => r.row === rowLetter);
+    return total + (rowInfo ? rowInfo.price : 0);
+  }, 0);
 
   return (
-    <div className="container">
-      <h1 className="title">Seat Selection</h1>
-      <p className="subtitle">🎬 {cinema}</p>
+    <div className="seat-page">
+      <div className="seat-container">
 
-      {/* SHOW TIMES */}
-      <h3 className="subtitle" style={{ marginTop: "30px" }}>
-        ⏰ Select Show Time
-      </h3>
+        {/* LEFT SIDE */}
+        <div className="seat-layout">
+          <h2>{cinema}</h2>
+          <p>{screen} | {showTime}</p>
 
-      <div className="showtime-row">
-        {SHOWS.map((show) => (
-          <button
-            key={show.time}
-            className={`showtime-btn ${
-              selectedShow?.time === show.time ? "active" : ""
-            }`}
-            onClick={() => setSelectedShow(show)}
-          >
-            {show.time}
-            <span>₹{show.price}</span>
-          </button>
-        ))}
-      </div>
+          {/* SCREEN */}
+          <div className="screen">SCREEN</div>
 
-      {/* SCREEN */}
-      <div className="screen">SCREEN THIS WAY</div>
+          {/* SEAT GRID */}
+          <div className="seats-grid">
+            {rowsData.map((rowData) =>
+              [...Array(cols)].map((_, colIndex) => {
+                const seatNumber = `${rowData.row}${colIndex + 1}`;
+                const isSelected = selectedSeats.includes(seatNumber);
+                const isBooked = bookedSeats.includes(seatNumber);
 
-      {/* SEATS */}
-      <div className="seats">
-        {ROWS.map((row) => (
-          <div className="seat-row" key={row}>
-            <div className="row-label">{row}</div>
-            {Array.from({ length: SEATS_PER_ROW }).map((_, i) => {
-              const seat = `${row}${i + 1}`;
-              return (
-                <div
-                  key={seat}
-                  className={`seat ${
-                    selectedSeats.includes(seat) ? "selected" : ""
-                  }`}
-                  onClick={() => toggleSeat(seat)}
-                >
-                  {i + 1}
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={seatNumber}
+                    className={`seat 
+                      ${rowData.type.toLowerCase()} 
+                      ${isSelected ? "selected" : ""} 
+                      ${isBooked ? "booked" : ""}`}
+                    onClick={() => toggleSeat(seatNumber)}
+                  >
+                    {seatNumber}
+                  </div>
+                );
+              })
+            )}
           </div>
-        ))}
-      </div>
 
-      {/* SUMMARY */}
-      <div className="summary">
-        <p>
-          🎟 Seats:{" "}
-          <strong>
-            {selectedSeats.length ? selectedSeats.join(", ") : "None"}
-          </strong>
-        </p>
+          {/* LEGEND */}
+          <div className="legend">
+            <div><span className="box available"></span> Available</div>
+            <div><span className="box selected"></span> Selected</div>
+            <div><span className="box silver"></span> Silver</div>
+            <div><span className="box gold-box"></span> Gold</div>
+            <div><span className="box platinum-box"></span> Platinum</div>
+            <div><span className="box booked"></span> Booked</div>
+          </div>
+        </div>
 
-        <p>
-          💰 Total:{" "}
-          <strong>
-            {selectedShow ? `₹${totalPrice}` : "Select show time"}
-          </strong>
-        </p>
+        {/* RIGHT SIDE */}
+        <div className="booking-summary">
+          <h3>Booking Summary</h3>
 
-        <button
-          className="confirm-btn"
-          disabled={!selectedSeats.length || !selectedShow}
-          onClick={() =>
-            navigate("/payment", {
-              state: {
-                cinema,
-                show: selectedShow,
-                seats: selectedSeats,
-                total: totalPrice,
-              },
-            })
-          }
-        >
-          Proceed to Payment
-        </button>
+          <p><strong>Cinema:</strong> {cinema}</p>
+          <p><strong>Screen:</strong> {screen}</p>
+          <p><strong>Time:</strong> {showTime}</p>
+
+          <div className="selected-info">
+            <p><strong>Seats:</strong> {selectedSeats.join(", ") || "None"}</p>
+            <p><strong>Total:</strong> ₹{totalAmount}</p>
+          </div>
+
+          <button
+            disabled={selectedSeats.length === 0}
+            onClick={() =>
+              navigate("/payment", {
+                state: {
+                  cinema,
+                  screen,
+                  showTime,
+                  seats: selectedSeats,
+                  totalAmount,
+                },
+              })
+            }
+          >
+            Continue to Payment
+          </button>
+        </div>
+
       </div>
     </div>
   );

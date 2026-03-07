@@ -71,22 +71,12 @@ function EventDetails() {
             </div>
           </div>
 
-          <button
-            className="book-btn large"
-            onClick={() =>
-              navigate("/seats/event", {
-                state: {
-                  type: "event",
-                  cinema: event.title,
-                  show: { time: event.date },
-                  seats: ["General"],
-                  total: event.price,
-                },
-              })
-            }
-          >
-            Book Tickets
-          </button>
+        <button
+  className="book-btn large"
+  onClick={() => navigate(`/event-booking/${event.id}`)}
+>
+  Book Tickets
+</button>
 
         </aside>
 

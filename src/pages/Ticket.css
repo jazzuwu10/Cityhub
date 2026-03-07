@@ -1,0 +1,97 @@
+/* PAGE */
+.ticket-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1f, #0f1c3f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* WRAPPER */
+.ticket-wrapper {
+  text-align: center;
+  animation: reveal 0.6s ease;
+}
+
+/* TICKET CARD */
+.ticket-card {
+  display: flex;
+  background: #121c33;
+  width: 700px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px dashed #ff512f;
+  position: relative;
+}
+
+/* LEFT */
+.ticket-left {
+  flex: 2;
+  padding: 30px;
+  color: white;
+  text-align: left;
+}
+
+.ticket-left h2 {
+  color: #00e676;
+  margin-bottom: 10px;
+}
+
+.movie-title {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.ticket-details p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* PERFORATED DIVIDER */
+.ticket-divider {
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #ff512f,
+    #ff512f 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+/* RIGHT */
+.ticket-right {
+  flex: 1;
+  background: #0f1629;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn {
+  margin-top: 25px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff512f, #f09819);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 81, 47, 0.4);
+}
+
+/* ANIMATION */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}

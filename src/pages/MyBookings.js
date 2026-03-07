@@ -1,93 +1,50 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function MyBookings() {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState(
+    JSON.parse(localStorage.getItem("cityhub_bookings")) || []
+  );
 
-  useEffect(() => {
-    loadBookings();
-  }, []);
-
-  const loadBookings = () => {
-    const data = JSON.parse(localStorage.getItem("cityhubBookings")) || [];
-    setBookings(data.reverse());
-  };
-
-  const deleteBooking = (bookingId) => {
-    const updated = bookings.filter((b) => b.bookingId !== bookingId);
-
-    // reverse back before saving (because we reversed while displaying)
-    localStorage.setItem("cityhubBookings", JSON.stringify([...updated].reverse()));
+  function cancelBooking(index) {
+    const updated = bookings.filter((_, i) => i !== index);
+    localStorage.setItem("cityhub_bookings", JSON.stringify(updated));
     setBookings(updated);
-  };
-
-  if (bookings.length === 0) {
-    return (
-      <div className="container">
-        <h1>No Bookings Yet</h1>
-        <p>Your confirmed tickets will appear here.</p>
-      </div>
-    );
   }
 
   return (
-    <div className="container">
-      <h1 className="title">My Bookings</h1>
+    <div style={{ padding: "40px", color: "white", background: "#0f2027", minHeight: "100vh" }}>
+      <h1>🎟 My Bookings</h1>
 
-      {bookings.map((b, index) => (
-        <div key={index} className="ticket-card" style={{marginBottom:"20px"}}>
+      {bookings.length === 0 && <p>No bookings yet.</p>}
 
-          <div className="ticket-row">
-            <span>Type</span>
-            <strong>{b.type}</strong>
-          </div>
+      {bookings.map((booking, index) => (
+        <div
+          key={index}
+          style={{
+            background: "rgba(255,255,255,0.1)",
+            padding: "20px",
+            borderRadius: "10px",
+            marginBottom: "20px",
+          }}
+        >
+          <p><strong>Cinema:</strong> {booking.cinema}</p>
+          <p><strong>Seats:</strong> {booking.seats.join(", ")}</p>
+          <p><strong>Total:</strong> ₹ {booking.total}</p>
 
-          <div className="ticket-row">
-            <span>Place</span>
-            <strong>{b.cinema}</strong>
-          </div>
-
-          <div className="ticket-row">
-            <span>Time</span>
-            <strong>{b.show?.time}</strong>
-          </div>
-
-          <div className="ticket-row">
-            <span>Details</span>
-            <strong>{b.seats?.join(", ")}</strong>
-          </div>
-
-          <div className="ticket-row">
-            <span>Total</span>
-            <strong>₹{b.total}</strong>
-          </div>
-
-          <div className="ticket-row">
-            <span>Booking ID</span>
-            <strong>{b.bookingId}</strong>
-          </div>
-
-          <div className="ticket-row">
-            <span>Payment ID</span>
-            <strong>{b.paymentId}</strong>
-          </div>
-
-          {/* DELETE BUTTON */}
-          <div style={{marginTop:"15px", textAlign:"right"}}>
-            <button
-              onClick={() => deleteBooking(b.bookingId)}
-              style={{
-                background:"#ff4d4f",
-                color:"white",
-                border:"none",
-                padding:"8px 16px",
-                borderRadius:"8px",
-                cursor:"pointer"
-              }}
-            >
-              Delete Ticket
-            </button>
-          </div>
-
+          <button
+            onClick={() => cancelBooking(index)}
+            style={{
+              marginTop: "10px",
+              padding: "8px 20px",
+              borderRadius: "20px",
+              border: "none",
+              background: "#ff4d4d",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            Cancel Booking
+          </button>
         </div>
       ))}
     </div>

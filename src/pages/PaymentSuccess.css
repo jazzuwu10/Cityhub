@@ -1,0 +1,30 @@
+.success-page {
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0f1f, #0f1c3f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.success-box {
+  text-align: center;
+  animation: pop 0.6s ease;
+}
+
+.checkmark {
+  font-size: 70px;
+  color: #00e676;
+  margin-bottom: 20px;
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}

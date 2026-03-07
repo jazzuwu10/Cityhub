@@ -1061,9 +1061,270 @@ select {
   .movie-details {
     flex-direction: column;
   }
+}
 
   .movie-extra {
     margin-top: 30px;
     max-width: 100%;
   }
+
+
+.card-form button {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.card-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(1, 112, 247, 0.528);
+}
+
+.card-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 500px) {
+  .payment-card {
+    padding: 25px;
+  }
+
+  .payment-header h1 {
+    font-size: 20px;
+  }
+}
+.mood-container {
+  text-align: center;
+  margin: 30px 0;
+  color: white;
+}
+
+.mood-buttons button {
+  margin: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 25px;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mood-buttons button:hover {
+  background: #38bdf8;
+  transform: scale(1.05);
+}
+.crowd-meter {
+  background: #ddd;
+  height: 6px;
+  border-radius: 5px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.crowd-bar {
+  height: 6px;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+.filters-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.premium-filter {
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.premium-filter:hover {
+  background: rgba(0, 255, 150, 0.2);
+  transform: translateY(-2px);
+}
+
+.premium-filter.active {
+  background: linear-gradient(90deg, #00ff99, #00ccff);
+  color: black;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0,255,150,0.6);
+}
+/* Card must be relative */
+.movie-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Trending badge */
+.trending-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(90deg, #ff4d4d, #ff0000);
+  color: white;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
+  z-index: 5;
+}
+
+/* Crowd meter */
+.crowd-meter {
+  background: rgba(255,255,255,0.15);
+  height: 6px;
+  border-radius: 6px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+
+.crowd-bar {
+  height: 6px;
+  border-radius: 6px;
+  transition: width 0.9s ease-in-out;
+}
+.map-toggle-btn {
+  margin: 20px 0;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(90deg,#00ff99,#00ccff);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+}
+/* DARK THEME */
+body.dark {
+  background: #0a0f1f;
+  color: white;
+}
+
+/* LIGHT THEME */
+body.light {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* Light adjustments */
+body.light .home-card,
+body.light .movie-card,
+body.light .ticket-card,
+body.light .bms-left,
+body.light .bms-center,
+body.light .bms-right {
+  background: white;
+  color: #111;
+  border-color: #ddd;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: #0f1c3f;
+  color: white;
+  border-bottom: 1px solid #1c2d4f;
+}
+
+.logo {
+  font-size: 24px;
+  color: #00e676;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+}
+
+.nav-link.active {
+  color: #00e676;
+  border-bottom: 2px solid #00e676;
+}
+
+.login-btn,
+.logout-btn,
+.theme-btn {
+  background: transparent;
+  border: 1px solid #00e676;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #00e676;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-btn:hover,
+.logout-btn:hover,
+.theme-btn:hover {
+  background: #00e676;
+  color: black;
+}
+/* LIGHT THEME */
+body.light {
+  background: #f5f7fb;
+  color: #111;
+}
+
+body.light .navbar {
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+body.light .movie-card,
+body.light .home-card {
+  background: white;
+  border: 1px solid #e5e5e5;
+}
+
+body.light .nav-link {
+  color: #222;
+}
+
+body.light .nav-link.active {
+  color: #00e676;
 }
